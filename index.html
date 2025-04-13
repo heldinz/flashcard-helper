@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greek Flashcard Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Greek Flashcard Helper</h1>
+        </header>
+        
+        <main>
+            <div class="search-container">
+                <input type="text" id="wordInput" placeholder="Enter an English word" autofocus>
+                <button id="searchBtn">Search</button>
+            </div>
+
+            <div class="greek-lookup">
+                <input type="text" id="greekInput" placeholder="Copy-paste Greek word here">
+                <button id="forvoBtn">Listen on Forvo</button>
+            </div>
+
+            <div class="results-container">
+                <div class="service-links">
+                    <h2>Quick Links</h2>
+                    <div id="serviceLinks"></div>
+                </div>
+
+                <div class="embedded-results">
+                    <h2>Wiktionary Results</h2>
+                    <p class="hint">Copy any Greek word and paste it in the Greek word field above to look it up on Forvo</p>
+                    <div id="wiktionaryContent" class="wiktionary-content">
+                        <div class="loading-message">Enter an English word to see translations...</div>
+                    </div>
+                </div>
+
+                <div class="langeek-results">
+                    <h2>Langeek Results</h2>
+                    <div id="langeekContent" class="content-section">
+                        <div class="loading-message">Enter an English word to see translations...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Using Wiktionary, Langeek, and Forvo for Greek language learning</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
