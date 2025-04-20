@@ -108,16 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
     wiktionaryContent.addEventListener('mouseup', (e) => {
         setTimeout(() => {
             const selection = window.getSelection();
-            const selectedText = selection.toString().trim();
+            const selectedWords = selection.toString().trim().split(' ');
+            const lookupWord = selectedWords[selectedWords.length - 1];
 
             // Only show the button if selection is inside wiktionaryContent
-            if (selectedText && selection.rangeCount > 0 && wiktionaryContent.contains(selection.anchorNode)) {
+            if (lookupWord && selection.rangeCount > 0 && wiktionaryContent.contains(selection.anchorNode)) {
                 const range = selection.getRangeAt(0);
                 const rect = range.getBoundingClientRect();
                 selectionAction.style.top = `${rect.bottom + 10}px`;
                 selectionAction.style.left = `${rect.left}px`;
                 selectionAction.style.display = 'block';
-                selectionAction.onclick = () => openForvoLink(selectedText);
+                selectionAction.onclick = () => openForvoLink(lookupWord);
             } else {
                 selectionAction.style.display = 'none';
             }
