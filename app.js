@@ -8,25 +8,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const langeekContent = document.getElementById('langeekContent');
     const selectionAction = document.getElementById('selectionAction');
 
+    const services = [
+        {
+            id: 'wiktionary',
+            name: 'Greek Wiktionary',
+            url: `https://el.wiktionary.org/wiki/`
+        },
+        {
+            id: 'langeek',
+            name: 'Langeek Dictionary',
+            url: 'https://dictionary.langeek.co/'
+        },
+        {
+            id: 'forvo',
+            name: 'Forvo',
+            url: 'https://forvo.com/'
+        }
+    ];
+
+    const forvoURL = services.find((s) => s.id === 'forvo').url;
+    const langeekURL = services.find((s) => s.id === 'langeek').url;
+    
     function createServiceLinks(word) {
         const encodedWord = encodeURIComponent(word);
-        const services = [
-            {
-                name: 'Greek Wiktionary',
-                url: `https://el.wiktionary.org/wiki/${encodedWord}`
-            },
-            {
-                name: 'Langeek Dictionary',
-                url: 'https://dictionary.langeek.co/'
-            },
-            {
-                name: 'Forvo',
-                url: 'https://forvo.com/'
-            }
-        ];
 
         serviceLinksDiv.innerHTML = services.map(service => 
-            `<a href="${service.url}" target="_blank" rel="noopener noreferrer">${service.name}</a>`
+            `<a href="${service.url}${encodedWord}" target="_blank" rel="noopener noreferrer">${service.name}</a>`
         ).join('');
     }
 
@@ -58,12 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok && Array.isArray(data) && data.length > 0) {
                 const resultsHtml = data.map(item => `
                     <div class="langeek-item">
-                        <div class="english">${item.entry || ''}</div>
-                        ${item.translation?.wordPhoto?.photoThumbnail ? `<img src="${item.translation.wordPhoto.photoThumbnail}">` : ''}
+                        <dt class="english">
+                          ${item.entry} 
+                          [<a href="${langeekURL}/en/word/${item.id}?entry=${item.entry}" target="_blank" rel="noopener noreferrer">↗</a>]
+                        </dt>
+                        <dd>${item.translation?.wordPhoto?.photoThumbnail ? `<img src="${item.translation.wordPhoto.photoThumbnail}">` : ''}</dd>
                     </div>
                 `).join('');
                 
-                langeekContent.innerHTML = resultsHtml;
+                langeekContent.innerHTML = `<dl>${resultsHtml}</dl>`;
             } else {
                 langeekContent.innerHTML = '<div class="error-message">No results found in Langeek</div>';
             }
@@ -75,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openForvoLink(text) {
         const encodedWord = encodeURIComponent(text);
-        window.open(`https://forvo.com/word/${encodedWord}/#el`, '_blank');
+        window.open(`${forvoURL}/word/${encodedWord}/#el`, '_blank');
     }
 
     async function handleSearch() {
@@ -94,30 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
         ]);
     }
 
-    // Handle text selection in the iframe
-    wiktionaryContent.addEventListener('click', (e) => {
-        if (e.target.tagName === 'SPAN' || e.target.tagName === 'A') {
-            const text = e.target.textContent.trim();
+    // Handle text selection in the Wiktionary content
+    wiktionaryContent.addEventListener('mouseup', (e) => {
+        setTimeout(() => {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
 
-            if (text) {
-                // Position the button near the selection
-                const rect = e.target.getBoundingClientRect();
-
-                selectionAction.style.top = `${rect.bottom + window.scrollY + 10}px`;
+            // Only show the button if selection is inside wiktionaryContent
+            if (selectedText && selection.rangeCount > 0 && wiktionaryContent.contains(selection.anchorNode)) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                selectionAction.style.top = `${rect.bottom + 10}px`;
                 selectionAction.style.left = `${rect.left}px`;
                 selectionAction.style.display = 'block';
-
-                // Update click handler for the new selection
-                selectionAction.onclick = () => openForvoLink(text);
+                selectionAction.onclick = () => openForvoLink(selectedText);
             } else {
                 selectionAction.style.display = 'none';
             }
-        }
+        }, 0);
     });
 
     // Hide button when clicking outside
-    document.addEventListener('click', (e) => {
-        if (e.target !== selectionAction) {
+    document.addEventListener('mousedown', (e) => {
+        if (selectionAction && e.target !== selectionAction) {
             selectionAction.style.display = 'none';
         }
     });
@@ -145,15 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (greekWord) {
                 openForvoLink(greekWord);
             }
-        }
-    });
-
-    // Add click handler for Greek words in Langeek results
-    langeekContent.addEventListener('click', (e) => {
-        if (e.target.classList.contains('greek')) {
-            const greekWord = e.target.textContent.trim();
-            greekInput.value = greekWord;
-            openForvoLink(greekWord);
         }
     });
 });
