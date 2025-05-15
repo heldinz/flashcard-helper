@@ -2,6 +2,8 @@
 
 A basic web application to help with learning Greek words by providing quick access to various vocabulary learning resources.
 
+Designed for use with Anki and the Fluent Forever approach described in the blog post [Simple Word Flashcards](https://blog.fluent-forever.com/simple-word-flashcards/).
+
 ## Features
 
 Search for English words and get embedded results for:
