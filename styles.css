@@ -133,14 +133,14 @@ footer {
 }
 
 .selection-actions {
+    display: none;
     position: fixed;
     background: #3498db;
     color: white;
     padding: 8px 16px;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    display: none;
-    z-index: 1000;
+    z-index: 1;
     cursor: pointer;
     font-size: 14px;
     border: none;
@@ -215,7 +215,7 @@ footer {
     margin: 0.5rem 0;
 }
 
-.content-section {
+.langeek-content {
     background: white;
     padding: 2rem;
     border-radius: 4px;
