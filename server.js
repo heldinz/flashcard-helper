@@ -1,8 +1,12 @@
-const express = require("express");
-const cors = require("cors");
-const axios = require("axios");
-const cheerio = require("cheerio");
-const path = require("path");
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import axios from 'axios';
+import cheerio from 'cheerio';
+import cors from 'cors';
+import express from 'express';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
@@ -11,60 +15,60 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the current directory
-app.use(express.static(__dirname));
+// Serve static files from the public directory
+app.use(express.static(join(__dirname, 'public')));
 
 // Endpoint to fetch and parse Wiktionary content
-app.get("/api/wiktionary/:word", async (req, res) => {
-  try {
-    const word = req.params.word;
-    const url = `https://el.wiktionary.org/wiki/${encodeURIComponent(word)}`;
+app.get('/api/wiktionary/:word', async (req, res) => {
+	try {
+		const word = req.params.word;
+		const url = `https://el.wiktionary.org/wiki/${encodeURIComponent(word)}`;
 
-    const response = await axios.get(url);
-    const $ = cheerio.load(response.data);
+		const response = await axios.get(url);
+		const $ = cheerio.load(response.data);
 
-    // Find the English section
-    const englishSection = $("#Αγγλικά_\\(en\\)").parent().nextUntil("h2");
+		// Find the English section
+		const englishSection = $('#Αγγλικά_\\(en\\)').parent().nextUntil('h2');
 
-    if (englishSection.length === 0) {
-      return res.status(404).json({ error: "English section not found" });
-    }
+		if (englishSection.length === 0) {
+			return res.status(404).json({ error: 'English section not found' });
+		}
 
-    // Extract and clean the content
-    let content = "";
-    englishSection.each((_, elem) => {
-      content += $(elem).toString();
-    });
+		// Extract and clean the content
+		let content = '';
+		englishSection.each((_, elem) => {
+			content += $(elem).toString();
+		});
 
-    // Send the parsed content
-    res.json({ content });
-  } catch (error) {
-    console.error("Error fetching Wiktionary content:", error);
-    res.status(500).json({ error: "Failed to fetch Wiktionary content" });
-  }
+		// Send the parsed content
+		res.json({ content });
+	} catch (error) {
+		console.error('Error fetching Wiktionary content:', error);
+		res.status(500).json({ error: 'Failed to fetch Wiktionary content' });
+	}
 });
 
 // Endpoint to fetch Langeek results
-app.get("/api/langeek/:word", async (req, res) => {
-  try {
-    const word = req.params.word;
-    const url = `https://api.langeek.co/v1/cs/en/word/?term=${encodeURIComponent(
-      word
-    )}&filter=,inCategory,photo`;
+app.get('/api/langeek/:word', async (req, res) => {
+	try {
+		const word = req.params.word;
+		const url = `https://api.langeek.co/v1/cs/en/word/?term=${encodeURIComponent(
+			word,
+		)}&filter=,inCategory,photo`;
 
-    const response = await axios.get(url);
-    res.json(response.data || []); // Extract the results array from the response
-  } catch (error) {
-    console.error("Error fetching Langeek content:", error);
-    res.status(500).json({ error: "Failed to fetch Langeek content" });
-  }
+		const response = await axios.get(url);
+		res.json(response.data || []); // Extract the results array from the response
+	} catch (error) {
+		console.error('Error fetching Langeek content:', error);
+		res.status(500).json({ error: 'Failed to fetch Langeek content' });
+	}
 });
 
 // Default route to serve the main page
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.get('/', (req, res) => {
+	res.sendFile(join(__dirname, 'index.html'));
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+	console.log(`Server running at http://localhost:${port}`);
 });

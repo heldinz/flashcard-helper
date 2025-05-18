@@ -1,6 +1,9 @@
-# Greek Flashcard Helper
+# Flashcard Helper
 
-A basic web application to help with learning Greek words by providing quick access to various vocabulary learning resources.
+> [!IMPORTANT]
+> Services are currently hardcoded to Greek (el).
+
+A basic web application to help with learning words by providing quick access to various vocabulary learning resources.
 
 Designed for use with Anki and the Fluent Forever approach described in the blog post [Simple Word Flashcards](https://blog.fluent-forever.com/simple-word-flashcards/).
 
@@ -8,7 +11,7 @@ Designed for use with Anki and the Fluent Forever approach described in the blog
 
 Search for English words and get embedded results for:
 
-- Greek Wiktionary (for translations)
+- Wiktionary (for translations)
 - Langeek Dictionary (for images)
 - Forvo (for pronunciation)
 
@@ -37,17 +40,18 @@ Images are displayed in the **Langeek Results** section
 
 ### Forvo
 
-You must select a Greek word in order to find pronunciation audio files.
+You must select a word in order to find pronunciation audio files.
 
-- Select a Greek word from the **Wiktionary Results** section to get a “Listen on Forvo” button
-- Click the button to open the Greek word in Forvo in a new tab
+- Select a word from the **Wiktionary Results** section to get a “Listen on Forvo” button
+- Click the button to open the word in Forvo in a new tab
 - Download a pronunciation audio file from Forvo (account required)
 - Add the audio file to your flashcard
 
 ### Quick Links
 
-If any of the embedded search results do not fit your needs, you can use the **Quick Links** section to open your search term in the respective service in a new tab. In the case of Forvo, it will take you to the Forvo home page, where you can search for a Greek word.
+If any of the embedded search results do not fit your needs, you can use the **Quick Links** section to open your search term in the respective service in a new tab. In the case of Forvo, it will take you to the Forvo home page, where you can search for a word in your target language.
 
 ## Future Improvements
 
+- Add configurable support for other languages
 - Add export functionality for creating flashcards

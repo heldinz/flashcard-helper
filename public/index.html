@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Flashcard Helper</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1>Flashcard Helper</h1>
+			</header>
+
+			<main>
+				<div class="search-container">
+					<input
+						type="text"
+						id="word-input"
+						placeholder="Enter an English word"
+						autofocus
+					/>
+					<button id="search-btn">Search</button>
+				</div>
+
+				<div class="results-container">
+					<div class="embedded-results">
+						<h2>Wiktionary Results</h2>
+						<p class="hint">
+							Select any word to get a “Listen on Forvo” button
+						</p>
+						<div id="wiktionary-content" class="wiktionary-content">
+							<p class="loading-message">
+								Enter an English word to see translations...
+							</p>
+						</div>
+					</div>
+
+					<div class="langeek-results">
+						<h2>Langeek Results</h2>
+						<div id="langeek-content" class="langeek-content">
+							<p class="loading-message">
+								Enter an English word to see translations...
+							</p>
+						</div>
+					</div>
+
+					<div class="service-links">
+						<h2>Quick Links</h2>
+						<div id="service-links"></div>
+					</div>
+				</div>
+			</main>
+
+			<button id="selection-action" class="selection-actions">
+				Listen on Forvo
+			</button>
+
+			<footer>
+				<p>Using Wiktionary, Langeek, and Forvo for language learning</p>
+			</footer>
+		</div>
+		<script src="app.js"></script>
+	</body>
+</html>
